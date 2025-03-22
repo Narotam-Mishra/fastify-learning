@@ -1,3 +1,4 @@
+import { authHandler } from "../hooks/user-auth.js";
 
 const createUserSchema = {
   body: {
@@ -29,6 +30,10 @@ const createUserSchema = {
 };
 
 async function userRouter(fastify, opts) {
+
+    // implementing middlewares
+    // fastify.addHook('preHandler', authHandler);
+
     fastify.post('/api/users', { schema: createUserSchema }, async (req, rep) => {
         // get request body
         const {name, email, password} = req.body;
@@ -70,6 +75,17 @@ async function userRouter(fastify, opts) {
         fastify.log.info("User list fetched!!")
 
         return allUsers;
+    })
+
+    fastify.get("/api/users/:id", { preHandler: authHandler }, async (req, rep) => {
+      console.log("from user handler...", req.userToken);
+      const Id = new fastify.mongo.ObjectId(req.params.id);
+
+      // get collection
+      const userCollection = fastify.mongo.db.collection('users');
+
+      const singleUser = await userCollection.findOne({_id: Id});
+      return singleUser;
     })
 }
 

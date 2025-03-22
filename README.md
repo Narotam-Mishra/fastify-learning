@@ -76,6 +76,10 @@ npm test
 
 ## [Fastify Doc](https://fastify.dev/docs/latest/)
 
+## [Fastify Hooks](https://fastify.dev/docs/latest/Reference/Hooks/)
+
+## [Fastify Lifecycle](https://fastify.dev/docs/latest/Reference/Lifecycle/)
+
 ## License
 
 This project is licensed under the MIT License.
