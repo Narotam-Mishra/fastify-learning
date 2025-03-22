@@ -1,10 +1,17 @@
 
 import Fastify from 'fastify';
 import userRouter from './src/routes/userRoute.js';
+import fastifyMongo from '@fastify/mongodb';
 
 const fastify = new Fastify({
     logger: true,
 });
+
+// database connection
+fastify.register(fastifyMongo, {
+    forceClose: true,
+    url: process.env.DB_URL,
+})
 
 // register routes
 fastify.register(userRouter);
