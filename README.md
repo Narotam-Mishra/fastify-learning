@@ -1,4 +1,4 @@
-# [Fastify API](https://fastify.dev/)
+# [Fastify](https://fastify.dev/)
 
 Fastify is a high-performance web framework for Node.js, optimized for speed and low overhead. This project provides a basic setup for building a RESTful API with Fastify.
 
@@ -79,6 +79,8 @@ npm test
 ## [Fastify Hooks](https://fastify.dev/docs/latest/Reference/Hooks/)
 
 ## [Fastify Lifecycle](https://fastify.dev/docs/latest/Reference/Lifecycle/)
+
+## [Fastify Ecosystem](https://fastify.dev/docs/latest/Guides/Ecosystem/)
 
 ## License
 

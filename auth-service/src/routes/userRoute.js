@@ -1,4 +1,7 @@
 import { authHandler } from "../hooks/user-auth.js";
+import fastifyMultipart from '@fastify/multipart';
+import { pipeline } from 'node:stream/promises';
+import fs from 'node:fs';
 
 const createUserSchema = {
   body: {
@@ -30,6 +33,19 @@ const createUserSchema = {
 };
 
 async function userRouter(fastify, opts) {
+
+    // register fastify multipart
+    fastify.register(fastifyMultipart, {
+      limits: {
+        fieldNameSize: 100, // Max field name size in bytes
+        fieldSize: 100,     // Max field value size in bytes
+        fields: 10,         // Max number of non-file fields
+        fileSize: 1000000,  // For multipart forms, the max file size in bytes
+        files: 1,           // Max number of file fields
+        headerPairs: 2000,  // Max number of header key=>value pairs
+        parts: 1000         // For multipart forms, the max number of parts (fields + files)
+      }
+    });
 
     // implementing middlewares
     // fastify.addHook('preHandler', authHandler);
@@ -86,7 +102,17 @@ async function userRouter(fastify, opts) {
 
       const singleUser = await userCollection.findOne({_id: Id});
       return singleUser;
-    })
+    });
+
+    fastify.post("/api/upload", async (req, rep) => {
+      const data = await req.file();
+      // console.log(data);
+
+      // const filePath = path.join(uploadDir, data.filename);
+
+      await pipeline(data.file, fs.createWriteStream(`static/${data.filename}`));
+      rep.send();
+    });
 }
 
 export default userRouter;
